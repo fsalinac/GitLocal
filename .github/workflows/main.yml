@@ -1,18 +1,47 @@
-name: Workflow Básico
+name: Workflow Complejo Básico
 
+# Ejecutar el workflow en cada push a la rama main o en la creación de un pull request
 on:
   push:
     branches:
-      - main  # Se ejecuta cuando haces un push a la rama "main".
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Ejecuta el workflow en un entorno Ubuntu.
-
+  # Primer trabajo: Validar sintaxis YAML
+  validate-yaml:
+    runs-on: ubuntu-latest
     steps:
-      - name: Chequear el código
-        uses: actions/checkout@v2  # Descarga el código del repositorio.
+      - name: Checkout del código
+        uses: actions/checkout@v2
 
-      - name: Ejecutar un mensaje de prueba
-        run: echo "¡Hola, GitHub Actions!"  # Imprime un mensaje en los logs.
+      - name: Validar sintaxis YAML
+        run: |
+          echo "Validando archivos YAML en el repositorio"
+          find . -name "*.yml" -o -name "*.yaml" | xargs yamllint
+
+  # Segundo trabajo: Verificar información del sistema
+  system-info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Imprimir información del sistema
+        run: |
+          echo "Mostrando información del sistema"
+          uname -a
+          lsb_release -a
+          df -h
+          free -m
+
+  # Tercer trabajo: Ejecutar un comando de shell básico
+  shell-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ejecutar comandos de shell
+        run: |
+          echo "Comenzando con las tareas del shell"
+          mkdir -p output
+          echo "Creando un archivo de prueba" > output/testfile.txt
+          ls -l output
 
