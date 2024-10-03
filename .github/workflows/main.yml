@@ -1,0 +1,18 @@
+name: Workflow Básico
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cuando haces un push a la rama "main".
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Ejecuta el workflow en un entorno Ubuntu.
+
+    steps:
+      - name: Chequear el código
+        uses: actions/checkout@v2  # Descarga el código del repositorio.
+
+      - name: Ejecutar un mensaje de prueba
+        run: echo "¡Hola, GitHub Actions!"  # Imprime un mensaje en los logs.
+
